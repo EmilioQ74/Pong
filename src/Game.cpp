@@ -4,6 +4,7 @@ Game::Game():player1(PADDLE_WIDTH_FROM_WALL, GAME_HEIGHT/2 - PADDLE_HEIGHT/2), p
 {
     ball = Ball();
     board = Board();
+    menu = Menu();
     BallOnTheField = false;
 
 }
@@ -70,6 +71,7 @@ void Game::KeyHandling()
 void Game::Draw()
 {
     board.Draw();
+    menu.DrawMenu();
     board.DrawDigit(player1.getScore(), PLAYER_1_SCORE_POSITION_X,SCORE_POSITION_Y);
     board.DrawDigit(player2.getScore(), PLAYER_2_SCORE_POSITION_X,SCORE_POSITION_Y);
     player1.Draw();

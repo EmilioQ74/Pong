@@ -2,11 +2,14 @@
 #include "Player.h"
 #include "Board.h"
 #include "Ball.h"
+#include "Menu.h"
+
 class Game{
     private:
         Player player1, player2;
         Ball ball;
         Board board;
+        Menu menu;
         bool BallOnTheField;      
         static const int KeyCount = 256;
         bool KeyStates[KeyCount] = {false};
