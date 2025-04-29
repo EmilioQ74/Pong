@@ -1,20 +1,20 @@
 #include "Ball.h"
 
-Ball::Ball()
+Ball::Ball() //constructor
 {
    Initialize();
    dir = 0;
 }
-void Ball::Initialize()
+void Ball::Initialize() //initialize the ball
 {
     x = GAME_WIDTH/2 - BALL_WIDTH/2;
     y = GAME_HEIGHT/2 - BALL_HEIGHT/2;
-    speed = 1.1;
+    speed = 1.1; //initial speed 
     StartMove();
 }
-int Ball::BallOutside()
+int Ball::BallOutside() //check if the ball is outside the field
 {
-    if(x >= GAME_WIDTH)
+    if(x >= GAME_WIDTH) 
     {
         return 1;
     }
@@ -24,7 +24,7 @@ int Ball::BallOutside()
     }
     return 0;
 }
-void Ball::StartMove()
+void Ball::StartMove() //start moving the ball at random angle
 {
     double angle;
     std::cout << dir << std::endl;
@@ -42,62 +42,62 @@ void Ball::StartMove()
     diry =BALL_SPEED * sin(angle);
 }
 
-void Ball::SpeedUp()
+void Ball::SpeedUp() //acceleration
 {
     dirx *= speed;
     diry *= speed;
 }
 
-void Ball::WallCollision()
+void Ball::WallCollision() //wall collision
 {
     
-    if(y + BALL_HEIGHT >= GAME_HEIGHT || y <=0)
+    if(y + BALL_HEIGHT >= GAME_HEIGHT || y <=0) //if the ball hits the top or bottom wall
     {
-        diry *= -1;
-        update();
+        diry *= -1; //reverse the direction
+        update(); //update the position
     }
 }
 
-void Ball::PaddleCollision(Player player)
+void Ball::PaddleCollision(Player player) //paddle collision
 {
-    if(Overlap(player))
+    if(Overlap(player)) //if the ball overlaps the paddle
     {
-        PaddlePhysics(player);
-        dirx *= -1;
+        PaddlePhysics(player); //paddle physics
+        dirx *= -1; 
         SpeedUp();
-        speed+=BALL_SPEED_INCREASE;
+        speed+=BALL_SPEED_INCREASE; //acceleration 
         update();
     }
 }
 
-bool Ball::Overlap(Player player)
+bool Ball::Overlap(Player player) //check if the ball overlaps the paddle
 {
-    bool xOverlap = x >= player.getX() && x < player.getX() + PADDLE_WIDTH;
-    bool yOverlap = y >= player.getY() && y < player.getY() + PADDLE_HEIGHT;
-    return xOverlap && yOverlap;
+    bool xOverlap = x >= player.getX() && x < player.getX() + PADDLE_WIDTH; //check if the ball overlaps the paddle by checking if the ball is inside the paddle
+    bool yOverlap = y >= player.getY() && y < player.getY() + PADDLE_HEIGHT; //check if the ball overlaps the paddle by checking if the ball is inside the paddle
+    return xOverlap && yOverlap; //if the ball x and y coordinates are inside the paddle return true
 }
 
 
-void Ball::PaddlePhysics(Player player)
+void Ball::PaddlePhysics(Player player) //making the ball bounce off the paddle if hits the paddle at the top or bottom
 {
     double angle;
-    double paddleTop = player.getY()+PADDLE_HEIGHT/4;
-    double paddleBottom = player.getY()+3*PADDLE_HEIGHT/4;
-    if(y > paddleTop)
+    double paddleTop = player.getY()+PADDLE_HEIGHT/4; //getting the top paddle
+    double paddleBottom = player.getY()+3*PADDLE_HEIGHT/4; //getting the bottom paddle
+    if(y > paddleTop) //if the ball hits the top paddle
     {
-        if(dirx < 0)
+        if(dirx < 0) //if the ball is moving left
         {
             angle = (rand() % 60+120) * M_PI / 180.0f; //120 to 180
             dirx =BALL_SPEED * cos(angle);
             diry =BALL_SPEED * sin(angle);
-        }else
+        }else //if the ball is moving right
         {
             angle = (rand() % 60) * M_PI / 180.0f; //0 to 60
             dirx =BALL_SPEED * cos(angle);
             diry =BALL_SPEED * sin(angle);
         }
     }
-    if (y < paddleBottom)
+    if (y < paddleBottom) //if the ball hits the bottom paddle
     {
         if(dirx < 0)
         {
@@ -114,24 +114,33 @@ void Ball::PaddlePhysics(Player player)
     
 }
 
-void Ball::update()
+void Ball::update() //update the position
 {
     x += dirx;
     y += diry;
 
 }
-void Ball::Draw()
+void Ball::Draw(bool squareBall) //draw the ball
 {
     glColor3f(1,1,1);
-    RoundBall();
+    if(squareBall) SquareBall();
+    else RoundBall();
     
 }
-void Ball::GameOver()
+void Ball::GameOver() //Stops the ball
 {
     dirx=0;
     diry=0;
 }
-void Ball::RoundBall()
+double Ball::getX() const
+{
+    return x;
+}
+double Ball::getY() const
+{
+    return y;
+}
+void Ball::RoundBall() //Draws the ball as a circle
 {
     glBegin(GL_POLYGON);
     for (size_t i = 0; i < 360; i++)
@@ -142,7 +151,7 @@ void Ball::RoundBall()
     glEnd();
     
 }
-void Ball::SquareBall()
+void Ball::SquareBall() //Draws the ball as a square
 {
     glRectf(x - BALL_WIDTH/2,y - BALL_HEIGHT/2,x+BALL_WIDTH,y+BALL_HEIGHT); //center of the ball
 }

@@ -1,6 +1,6 @@
 #include "Paddle.h"
 
-Paddle::Paddle(int x, int y)
+Paddle::Paddle(double x, double y)  // constructor sets also the width and height
 {
     this->x = x;
     this->y = y;
@@ -8,7 +8,7 @@ Paddle::Paddle(int x, int y)
     height = PADDLE_HEIGHT;
 }
 
-void Paddle::setY(int y)
+void Paddle::setY(double y) 
 {
     this->y = y;
 }
@@ -20,3 +20,12 @@ void Paddle::Draw()
     glRectf(x,y,x+width,y+height);
 }
 
+void Paddle::setSpeed(double speed)
+{
+    this->speed = speed;
+}
+
+double Paddle::getSpeed()
+{
+    return speed;
+}

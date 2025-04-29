@@ -1,11 +1,14 @@
 #pragma once
 #include "GameConfig.h"
 
-class Paddle {
-    private:
-        int x,y,width,height;
+class Paddle { 
+    private: 
+        double x,y,width,height;  
+        double speed = PADDLE_SPEED;
     public:
-        Paddle(int x,int y);
-        void setY(int y);
-        void Draw();
+        Paddle(double x,double y);
+        void setY(double y); //For moving the paddle
+        void Draw(); //For drawing the paddle
+        void setSpeed(double speed); //For setting the paddle speed
+        double getSpeed(); //For getting the paddle speed
 };

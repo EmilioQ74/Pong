@@ -4,17 +4,18 @@
 
 class Player{
     private:
-        int x,y;
+        double x,y;
         int score;
         Paddle paddle;
     public:
-        Player();
-        Player(int x,int y);
-        void Draw();
-        void MoveUp();
-        void MoveDown();
-        void setScore(int score);
-        int getScore() const;
-        int getX() const;
-        int getY() const;
+        Player();  // default constructor
+        Player(double x,double y); // constructor
+        void Draw(); // for drawing the paddle
+        void MoveUp(); // for movingUp the paddle
+        void MoveDown(); // for movingDown the paddle
+        void setScore(int score); // for setting the score
+        void AiLogic(double Ballx, double Bally,int mode); // for setting ai if single player
+        int getScore() const; // for getting the score
+        double getX() const; 
+        double getY() const;
 };

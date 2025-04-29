@@ -10,7 +10,13 @@ class Game{
         Ball ball;
         Board board;
         Menu menu;
-        bool BallOnTheField;      
+        bool squareBall;
+        bool MenuState;
+        bool DifficultyState;
+        int DifficultyMode;
+        bool SettingState;
+        bool BallOnTheField;
+        bool SinglePlayerMode = true;
         static const int KeyCount = 256;
         bool KeyStates[KeyCount] = {false};
         bool SpecialKeyStates[KeyCount] = {false};
@@ -23,6 +29,7 @@ class Game{
         void keyUp(unsigned char key, int x, int y);
         void specialKeyDown(int key, int x, int y);
         void specialKeyUp(int key, int x, int y);
+        void mouseClick(int button, int state, int x, int y);
         void update();
         void Draw();
         void Reset();

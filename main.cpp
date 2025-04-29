@@ -5,6 +5,10 @@
 
 static Game game;
 
+void mouseClick(int button, int state, int x, int y)
+{
+    game.mouseClick(button,state,x,y);
+}
 void keyDown(unsigned char key, int x, int y)
 {
     game.keyDown(key,x,y);
@@ -76,6 +80,9 @@ int main(int argc, char** argv){
     glutKeyboardUpFunc(keyUp);
     glutSpecialFunc(specialKeyDown);
     glutSpecialUpFunc(specialKeyUp);
+
+    //mouse
+    glutMouseFunc(mouseClick);
     //timer
     glutTimerFunc(0, FPS, 0);
     //reshape
