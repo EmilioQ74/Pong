@@ -1,5 +1,6 @@
 #pragma once
 #include "GameConfig.h"
+#include "Colors.h"
 
 class Paddle { 
     private: 

@@ -37,6 +37,7 @@ void DrawAllSegments(int x, int y)
 
 void Board::DrawDigit(int digit, int x, int y)
 {
+    ThemeManager::getTheme().digit.apply();
     switch(digit)
     {
         case 0: SegmentTop(x,y); SegmentTopLeft(x,y);SegmentBottomLeft(x,y);SegmentBottom(x,y);SegmentBottomRight(x,y);SegmentTopRight(x,y); break;
@@ -60,8 +61,9 @@ Board::Board()
 
 void Board::Draw()
 {
-    glColor3f(1,0,0);  
-    glColor3f(1,1,1);
+    ThemeManager::getTheme().field.apply();
+    glRectf(0,0,GAME_WIDTH,GAME_HEIGHT);
+    ThemeManager::getTheme().net.apply();
     for(int i = 0; i < GAME_HEIGHT; i+=20)
         glRectf(GAME_WIDTH/2-3,i,GAME_WIDTH/2+3,i+10);
 }

@@ -9,6 +9,8 @@ void mouseClick(int button, int state, int x, int y)
 {
     game.mouseClick(button,state,x,y);
 }
+
+
 void keyDown(unsigned char key, int x, int y)
 {
     game.keyDown(key,x,y);

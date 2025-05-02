@@ -10,6 +10,9 @@ class Game{
         Ball ball;
         Board board;
         Menu menu;
+        Theme CurrentTheme;
+        bool GameOver;
+        bool Pause;
         bool squareBall;
         bool MenuState;
         bool DifficultyState;
@@ -20,11 +23,14 @@ class Game{
         static const int KeyCount = 256;
         bool KeyStates[KeyCount] = {false};
         bool SpecialKeyStates[KeyCount] = {false};
-        void KeyHandling();
+        
+        void gameInputs();
+
     public:
         Game();
         void initialize();
         void leftRightScore();
+        void KeyHandling(unsigned char key, int x, int y);
         void keyDown(unsigned char key, int x, int y);
         void keyUp(unsigned char key, int x, int y);
         void specialKeyDown(int key, int x, int y);

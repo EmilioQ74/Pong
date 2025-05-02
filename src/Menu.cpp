@@ -2,16 +2,9 @@
 
 Menu::Menu()
 {
-    start = {GAME_WIDTH/2-50,GAME_HEIGHT/4,100,50};
-    setting = {GAME_WIDTH/2-50,GAME_HEIGHT/2,100,50};
-    quit = {GAME_WIDTH/2-50,GAME_HEIGHT*3/4,100,50};
-
-    Easy = {GAME_WIDTH/2-50,GAME_HEIGHT/4,100,50};
-    Medium = {GAME_WIDTH/2-50,GAME_HEIGHT/2,100,50};
-    Hard = {GAME_WIDTH/2-50,GAME_HEIGHT*3/4,100,50};
-
-    SquareBall = {GAME_WIDTH/2-100,GAME_HEIGHT/2,200,50};
-
+    topButton = {GAME_WIDTH/2-50,GAME_HEIGHT/4,100,50};
+    middleButton = {GAME_WIDTH/2-50,GAME_HEIGHT/2,100,50};
+    bottomButton = {GAME_WIDTH/2-50,GAME_HEIGHT*3/4,100,50};
 }
 
 bool Menu::ClickButton(int x, int y , Button button)
@@ -23,52 +16,51 @@ bool Menu::ClickButton(int x, int y , Button button)
 
 void Menu::DrawMenu()
 {
-   
-    DrawButton(start);
-    glColor3f(1,0,0);
-    RenderText(start.x+30,start.y+30,GLUT_BITMAP_HELVETICA_18,"START");
-    glColor3f(1,1,0);
-    DrawButton(setting);
-    glColor3f(1,1,1);
-    RenderText(setting.x+30,setting.y+30,GLUT_BITMAP_HELVETICA_18,"SETTING");
-    glColor3f(0,0,1);
-    DrawButton(quit);
-    glColor3f(1,1,1);
-    RenderText(quit.x+30,quit.y+30,GLUT_BITMAP_HELVETICA_18,"QUIT");
+    DrawButton(topButton);
+    RenderText(topButton.x+20,topButton.y+30,GLUT_BITMAP_HELVETICA_18,"START");
+    DrawButton(middleButton);
+    RenderText(middleButton.x+10,middleButton.y+30,GLUT_BITMAP_HELVETICA_18,"SETTING");
+    DrawButton(bottomButton);
+    RenderText(bottomButton.x+25,bottomButton.y+30,GLUT_BITMAP_HELVETICA_18,"QUIT");
 }
 
 void Menu::DrawDifficulty()
 {
-    DrawButton(Easy);
-    glColor3f(1,0,0);
-    RenderText(Easy.x+30,Easy.y+30,GLUT_BITMAP_HELVETICA_18,"EASY");
-    glColor3f(1,1,0);
-    DrawButton(Medium);
-    glColor3f(1,1,1);
-    RenderText(Medium.x+30,Medium.y+30,GLUT_BITMAP_HELVETICA_18,"MEDIUM");
-    glColor3f(0,0,1);
-    DrawButton(Hard);
-    glColor3f(1,1,1);
-    RenderText(Hard.x+30,Hard.y+30,GLUT_BITMAP_HELVETICA_18,"HARD");
+    DrawButton(topButton);
+    RenderText(topButton.x+25,topButton.y+30,GLUT_BITMAP_HELVETICA_18,"EASY");
+    DrawButton(middleButton);
+    RenderText(middleButton.x+15,middleButton.y+30,GLUT_BITMAP_HELVETICA_18,"MEDIUM");
+    DrawButton(bottomButton);
+    RenderText(bottomButton.x+25,bottomButton.y+30,GLUT_BITMAP_HELVETICA_18,"HARD");
 }
 
 void Menu::DrawSetting()
 {
-    DrawButton(SquareBall);
-    glColor3f(1,0,0);
-    RenderText(SquareBall.x,SquareBall.y,GLUT_BITMAP_HELVETICA_18,"CHECK FOR SQUARE");
-    DrawButton(quit);
-    RenderText(quit.x+30,quit.y+30,GLUT_BITMAP_HELVETICA_18,"QUIT");
+    DrawButton(topButton);
+    RenderText(topButton.x+20,topButton.y+30,GLUT_BITMAP_HELVETICA_18,"THEME");
+    DrawButton(middleButton);
+    RenderText(middleButton.x+20,middleButton.y+30,GLUT_BITMAP_HELVETICA_18,"BALL");
+    DrawButton(bottomButton);
+    RenderText(bottomButton.x+25,bottomButton.y+30,GLUT_BITMAP_HELVETICA_18,"BACK");
 }
-
+void Menu::DrawPause()
+{
+    DrawButton(topButton);
+    RenderText(topButton.x+20,topButton.y+30,GLUT_BITMAP_HELVETICA_18,"CONTINUE");
+    DrawButton(middleButton);
+    RenderText(middleButton.x+20,middleButton.y+30,GLUT_BITMAP_HELVETICA_18,"SETTING");
+    DrawButton(bottomButton);
+    RenderText(bottomButton.x+25,bottomButton.y+30,GLUT_BITMAP_HELVETICA_18,"BACK");
+}
 void Menu::DrawButton(Button button)
 {
-    glColor3f(0,1,0);
+    ThemeManager::getTheme().button.apply();
     glRectf(button.x,button.y,button.x+button.width,button.y+button.height);
 }
 
 void Menu::RenderText(float x, float y, void *font, const std::string &text)
 {
+    ThemeManager::getTheme().text.apply();
     glRasterPos2f(x,y);
     for(char c:text)
         glutBitmapCharacter(font,c);

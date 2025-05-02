@@ -1,10 +1,11 @@
 #pragma once
 #include "GameConfig.h"
-
+#include "Colors.h"
 
 class Board {
+
 public:
     Board();
-    void DrawDigit(int digit, int x, int y);
     void Draw();
+    void DrawDigit(int digit, int x, int y);
 };

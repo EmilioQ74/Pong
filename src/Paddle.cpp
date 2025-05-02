@@ -16,7 +16,7 @@ void Paddle::setY(double y)
 // draws rectangle of the Paddle
 void Paddle::Draw()
 {
-    glColor3f(1,1,1);
+    ThemeManager::getTheme().paddle.apply();
     glRectf(x,y,x+width,y+height);
 }
 

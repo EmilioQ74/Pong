@@ -2,8 +2,8 @@
 
 Ball::Ball() //constructor
 {
-   Initialize();
-   dir = 0;
+    Initialize();
+    dir = 0;
 }
 void Ball::Initialize() //initialize the ball
 {
@@ -122,7 +122,7 @@ void Ball::update() //update the position
 }
 void Ball::Draw(bool squareBall) //draw the ball
 {
-    glColor3f(1,1,1);
+    ThemeManager::getTheme().ball.apply();
     if(squareBall) SquareBall();
     else RoundBall();
     
