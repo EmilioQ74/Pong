@@ -1,24 +1,31 @@
 #include "Game.h"
+#include "Music.h"
 
 Game::Game():player1(PADDLE_WIDTH_FROM_WALL, GAME_HEIGHT/2 - PADDLE_HEIGHT/2), player2(GAME_WIDTH - PADDLE_WIDTH_FROM_WALL*2, GAME_HEIGHT/2 - PADDLE_HEIGHT/2)
 {
     ball = Ball();
     board = Board();
     menu = Menu();
+    CurrentMenuState = MENU;
     squareBall = false;
-    MenuState = true;
-    BallOnTheField = false;
-    SettingState = false;
-    DifficultyState = false;
     DifficultyMode = 0;
     Pause = false;
-    GameOver = true;
-    Theme CurrentTheme = ThemeManager::getTheme();
+    SinglePlayerMode = true;
+    SoundOn = true;
+    hit = false;
+    Winner = "";
+    MusicOn = true;
+    PlaySound(SOUNDTRACK, NULL, SND_ASYNC | SND_LOOP);
 }
 
 void Game::initialize()
 {
-    
+    CurrentMenuState = MENU;
+    DifficultyMode = 0;
+    Pause = false;
+    SinglePlayerMode = true;
+    Winner = "";
+    hit = false;
 }
 
 void Game::leftRightScore()
@@ -57,112 +64,186 @@ void Game::mouseClick(int button, int state, int x, int y)
 {
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
-        // 1st menu
-        if(menu.ClickButton(x,y,menu.topButton) && MenuState) //start
+        if(menu.ClickButton(x,y,menu.MuteButton)) //mute
         {
-            MenuState = false;
-            DifficultyState = true;
+            SoundOn = !SoundOn;
             return;
-        }
-        if(menu.ClickButton(x,y,menu.middleButton) && MenuState) //setting
+        } 
+        switch (CurrentMenuState)
         {
-            MenuState = false;
-            SettingState = true;
-            return;
+        case MENU:
+            if(menu.ClickButton(x,y,menu.topButton)) //start
+            {
+                CurrentMenuState=MODE;
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.middleButton)) //setting
+            {
+                CurrentMenuState=SETTING;
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.bottomButton)) //quit
+            {
+                exit(0);
+                return;
+            }
+            break;
+        case MODE:
+            if(menu.ClickButton(x,y,menu.topButton)) //single
+            {
+                Reset();
+                SinglePlayerMode = true;
+                CurrentMenuState = DIFFICULTY;
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.middleButton)) //multi
+            {
+                Reset();
+                SinglePlayerMode = false;
+                CurrentMenuState = PLAY;
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.bottomButton)) //back
+            {
+                CurrentMenuState = MENU;
+                return;
+            }
+            break;
+        case SETTING:
+            if(menu.ClickButton(x,y,menu.topButton)) //theme
+            {
+                ThemeManager::setTheme(ThemeManager::getTheme().isClassic() ? ModernTheme : ClassicTheme);
+                glutPostRedisplay();
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.middleButton)) //ball
+            {
+                squareBall = !squareBall;
+                glutPostRedisplay();
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.bottomButton)) //back
+            {
+                if(Pause)
+                {
+                    CurrentMenuState = PAUSE;
+                    return;
+                }
+                CurrentMenuState = MENU;
+                return;
+            }
+            break;
+        case PAUSE:
+            if(menu.ClickButton(x,y,menu.topButton)) //continue
+            {
+                Pause = false;
+                CurrentMenuState = PLAY;
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.middleButton)) //setting
+            {
+                CurrentMenuState = SETTING;
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.bottomButton)) //back
+            {
+                CurrentMenuState = MENU;
+                return;
+            }
+            break;
+        case WINNER:
+            if(menu.ClickButton(x,y,menu.winnerButton))
+            {
+                CurrentMenuState = MENU;
+                initialize();
+                glutPostRedisplay();
+                return;
+            }
+            break;
+        case DIFFICULTY:
+            if(menu.ClickButton(x,y,menu.topButton)) //easy
+            {
+                DifficultyMode = 0;
+                CurrentMenuState = PLAY;
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.middleButton)) //medium
+            {
+                DifficultyMode = 1;
+                CurrentMenuState = PLAY;
+                return;
+            }
+            if(menu.ClickButton(x,y,menu.bottomButton)) //hard
+            {
+                DifficultyMode = 2;
+                CurrentMenuState = PLAY;
+                return;
+            }
+        case PLAY:
+            break;
+        default:
+            break;
         }
-        if(menu.ClickButton(x,y,menu.bottomButton) && MenuState) //quit
-        {
-            exit(0);
-            return;
-        }
-        //end 1st menu
-        //setting menu
-        if(menu.ClickButton(x,y,menu.topButton) && SettingState) //theme
-        {
-            ThemeManager::setTheme(ThemeManager::getTheme().isClassic() ? ModernTheme : ClassicTheme);
-            glutPostRedisplay();
-            return;
-        }
-        if(menu.ClickButton(x,y,menu.middleButton) && SettingState) //ball
-        {
-            squareBall = !squareBall;
-            glutPostRedisplay();
-            return;
-        }
-        if(menu.ClickButton(x,y,menu.bottomButton) && SettingState) //back
-        {
-            SettingState = false;
-            MenuState = true;
-            return;
-        }
-        //end setting
-        //difficulty
-        if(menu.ClickButton(x,y,menu.topButton) && DifficultyState) //easy
-        {
-            Reset();
-            DifficultyMode = 1;
-            DifficultyState = false;
-            return;
-        }
-        if(menu.ClickButton(x,y,menu.middleButton) && DifficultyState) //medium
-        {
-            Reset();
-            DifficultyMode = 2;
-            DifficultyState = false;
-            return;
-        }
-        if(menu.ClickButton(x,y,menu.bottomButton) && DifficultyState) //hard
-        {
-            Reset();
-            DifficultyMode = 3;
-            DifficultyState = false;
-            return;
-        }
-        //end difficulty
-        //pause
-        if(menu.ClickButton(x,y,menu.topButton) && Pause ) //continue
-        {
-            Pause = false;
-            return;
-        }
-        if(menu.ClickButton(x,y,menu.middleButton) && Pause ) //setting
-        {
-            Pause = false;
-            SettingState = true;
-            return;
-        }
-        if(menu.ClickButton(x,y,menu.bottomButton) && Pause )  //back
-        {
-            Pause = false;
-            return;
-        }
-
     }
 }
-
 void Game::update()
 {
+    std::cout << CurrentMenuState << std::endl;
     leftRightScore();
     gameInputs();
-    if(!GameOver || !Pause)
+    SoundHandling();
+    if(!(Pause || CurrentMenuState == WINNER))
     {
         ball.update();
     }
     ball.WallCollision();
-    ball.PaddleCollision(player1);
-    ball.PaddleCollision(player2);
+    if(ball.PaddleCollision(player1) || ball.PaddleCollision(player2))hit = true;
+}
+
+void Game::MenuDraw()
+{
+    if(SoundOn) menu.DrawMute("ON");
+    else menu.DrawMute("OFF");
+    switch (CurrentMenuState)
+    {
+    case MENU:
+        menu.DrawMenu();
+        break;
+    case MODE:
+        menu.DrawMode();
+        break;
+    case SETTING:
+        menu.DrawSetting();
+        break;
+    case DIFFICULTY:
+        menu.DrawDifficulty();
+        break;
+    case PAUSE:
+        menu.DrawPause();
+        break;
+    case WINNER:
+        menu.DrawWinner(Winner);
+        break;
+    case PLAY:
+        break;
+    default:
+        break;
+    }
 }
 
 void Game::gameInputs()
 {
-    if(KeyStates['p'] || KeyStates['P'] || KeyStates[27] && (!MenuState && !DifficultyState && !SettingState)) 
+    if(KeyStates['p'] || KeyStates['P'] || KeyStates[27] && (CurrentMenuState == PLAY || CurrentMenuState == PAUSE)) 
     {
         Pause = !Pause;
+        if(Pause) CurrentMenuState = PAUSE;
+        else CurrentMenuState = PLAY;
+        KeyStates['p'] = false;
+        KeyStates['P'] = false;
+        KeyStates[27] = false;
     }
-    KeyStates['p'] = false;
-    KeyStates['P'] = false;
-    KeyStates[27] = false;
-    if(!GameOver || !Pause)
+    
+    if(!Pause)
     {
         if (KeyStates['w'] || KeyStates['W']) player1.MoveUp();
     else if (KeyStates['s'] || KeyStates['S']) player1.MoveDown();
@@ -172,21 +253,50 @@ void Game::gameInputs()
         else if(SpecialKeyStates[GLUT_KEY_DOWN]) player2.MoveDown();
     }else{
         player2.AiLogic(ball.getX(),ball.getY(),DifficultyMode);
-    };
+        }
+    }
+    if(KeyStates['m'] || KeyStates['M'])
+    {
+        SoundOn = !SoundOn;
+        KeyStates['m'] = false;
+        KeyStates['M'] = false;
     }
 }
 void Game::Draw()
 {
     board.Draw();
-    if(MenuState) menu.DrawMenu();
-    if(DifficultyState) menu.DrawDifficulty();
-    if(SettingState) menu.DrawSetting();
-    if(Pause) menu.DrawPause();
-    board.DrawDigit(player1.getScore(), PLAYER_1_SCORE_POSITION_X,SCORE_POSITION_Y);
-    board.DrawDigit(player2.getScore(), PLAYER_2_SCORE_POSITION_X,SCORE_POSITION_Y);
+    MenuDraw();
+    if(CurrentMenuState == PLAY)
+    {
+        board.DrawDigit(player1.getScore(), PLAYER_1_SCORE_POSITION_X,SCORE_POSITION_Y);
+        board.DrawDigit(player2.getScore(), PLAYER_2_SCORE_POSITION_X,SCORE_POSITION_Y);
+    }
     player1.Draw();
     player2.Draw();
     ball.Draw(squareBall);
+    isGameOver();
+}
+
+void Game::SoundHandling()
+{
+    std::cout << MusicOn << std::endl;
+    if(!SoundOn) 
+    {
+        PlaySound(NULL, NULL, 0);
+        MusicOn = false;
+    }
+    if(SoundOn && CurrentMenuState != PLAY && !MusicOn) 
+    {
+        PlaySound(SOUNDTRACK, NULL, SND_ASYNC | SND_LOOP);
+        MusicOn = true;
+        }
+    if(SoundOn && CurrentMenuState == PLAY && hit)
+    {
+        int randNum = rand() % 2;
+        if(randNum == 0) PlaySound(HIT1, NULL, SND_ASYNC);
+        else PlaySound(HIT2, NULL, SND_ASYNC );
+        hit = false;
+    }
 }
 
 void Game::Reset()
@@ -196,4 +306,23 @@ void Game::Reset()
     player1.setScore(0);
     player2.setScore(0);
     ball.Initialize();
+}
+
+void Game::isGameOver()
+{
+    if(CurrentMenuState == PLAY)
+    {
+        if(player1.getScore() == MAX_SCORE)
+        {
+        CurrentMenuState = WINNER;
+        Winner = "Player 1";
+        }
+    if(player2.getScore() == MAX_SCORE)
+        {
+        CurrentMenuState = WINNER;
+        if(SinglePlayerMode) Winner = "Computer";
+        else Winner = "Player 2";
+        }
+    }
+    
 }

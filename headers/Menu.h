@@ -17,12 +17,17 @@ class Menu{
         Button topButton;
         Button middleButton;
         Button bottomButton;
+        Button winnerButton;
+        Button MuteButton;
         Menu();
         bool ClickButton(int x, int y, Button button);
         void DrawMenu();
+        void DrawMode();
         void DrawDifficulty();
         void DrawSetting();
         void DrawPause();
+        void DrawMute(std::string onOff);
+        void DrawWinner(std::string winner);
         void DrawButton(Button button);
         void RenderText(float x, float y, void *font, const std::string &text);
 };

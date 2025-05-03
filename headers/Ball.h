@@ -22,7 +22,7 @@ public:
     int BallOutside(); //check if the ball is outside the field for scoring
     void StartMove(); //start moving the ball
     void WallCollision(); //wall collision
-    void PaddleCollision(Player player); //paddle collision
+    bool PaddleCollision(Player player); //paddle collision
     void update(); //update the ball
     void Draw(bool squareBall);     //draw the ball
 

@@ -9,7 +9,7 @@ void Ball::Initialize() //initialize the ball
 {
     x = GAME_WIDTH/2 - BALL_WIDTH/2;
     y = GAME_HEIGHT/2 - BALL_HEIGHT/2;
-    speed = 1.1; //initial speed 
+    speed = 1.5; //initial speed 
     StartMove();
 }
 int Ball::BallOutside() //check if the ball is outside the field
@@ -27,7 +27,6 @@ int Ball::BallOutside() //check if the ball is outside the field
 void Ball::StartMove() //start moving the ball at random angle
 {
     double angle;
-    std::cout << dir << std::endl;
     if(dir == 0)
     {
         angle = (rand() % 60 - 30) * M_PI / 180.0f; // -30° to +30°
@@ -58,7 +57,7 @@ void Ball::WallCollision() //wall collision
     }
 }
 
-void Ball::PaddleCollision(Player player) //paddle collision
+bool Ball::PaddleCollision(Player player) //paddle collision
 {
     if(Overlap(player)) //if the ball overlaps the paddle
     {
@@ -67,7 +66,9 @@ void Ball::PaddleCollision(Player player) //paddle collision
         SpeedUp();
         speed+=BALL_SPEED_INCREASE; //acceleration 
         update();
+        return true;
     }
+    return false;
 }
 
 bool Ball::Overlap(Player player) //check if the ball overlaps the paddle
