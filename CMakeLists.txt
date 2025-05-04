@@ -37,7 +37,6 @@ elseif(MINGW)
         message(FATAL_ERROR "FreeGLUT not found in system or custom path.")
         message(("Please install freeglut-dev package by msys2 package manager")) 
     endif()
-    # Add any specific MinGW configuration here
 else()
     message(FATAL_ERROR "Unsupported compiler. This project supports only MSVC or MinGW.")
 endif()
