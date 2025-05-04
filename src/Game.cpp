@@ -21,13 +21,11 @@ Game::Game():player1(PADDLE_WIDTH_FROM_WALL, GAME_HEIGHT/2 - PADDLE_HEIGHT/2), p
 void Game::initialize()
 {
     CurrentMenuState = MENU;
-    DifficultyMode = 0;
     Pause = false;
-    SinglePlayerMode = true;
     Winner = "";
     hit = false;
 }
-
+//left and right score
 void Game::leftRightScore()
 {
     if(ball.BallOutside() == 1)
@@ -59,7 +57,7 @@ void Game::specialKeyUp(int key, int x, int y)
 {
     SpecialKeyStates[key] = false;
 }
-
+//mouse click events
 void Game::mouseClick(int button, int state, int x, int y)
 {
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -91,7 +89,6 @@ void Game::mouseClick(int button, int state, int x, int y)
         case MODE:
             if(menu.ClickButton(x,y,menu.topButton)) //single
             {
-                Reset();
                 SinglePlayerMode = true;
                 CurrentMenuState = DIFFICULTY;
                 return;
@@ -156,6 +153,8 @@ void Game::mouseClick(int button, int state, int x, int y)
             {
                 CurrentMenuState = MENU;
                 initialize();
+                DifficultyMode = 0;
+                SinglePlayerMode = true;
                 glutPostRedisplay();
                 return;
             }
@@ -163,19 +162,22 @@ void Game::mouseClick(int button, int state, int x, int y)
         case DIFFICULTY:
             if(menu.ClickButton(x,y,menu.topButton)) //easy
             {
-                DifficultyMode = 0;
+                Reset();
+                DifficultyMode = 1;
                 CurrentMenuState = PLAY;
                 return;
             }
             if(menu.ClickButton(x,y,menu.middleButton)) //medium
             {
-                DifficultyMode = 1;
+                Reset();
+                DifficultyMode = 2;
                 CurrentMenuState = PLAY;
                 return;
             }
             if(menu.ClickButton(x,y,menu.bottomButton)) //hard
             {
-                DifficultyMode = 2;
+                Reset();
+                DifficultyMode = 3;
                 CurrentMenuState = PLAY;
                 return;
             }
@@ -186,9 +188,9 @@ void Game::mouseClick(int button, int state, int x, int y)
         }
     }
 }
+//GameLoop 
 void Game::update()
 {
-    std::cout << CurrentMenuState << std::endl;
     leftRightScore();
     gameInputs();
     SoundHandling();
@@ -199,7 +201,7 @@ void Game::update()
     ball.WallCollision();
     if(ball.PaddleCollision(player1) || ball.PaddleCollision(player2))hit = true;
 }
-
+//MENU DRAW 
 void Game::MenuDraw()
 {
     if(SoundOn) menu.DrawMute("ON");
@@ -230,7 +232,7 @@ void Game::MenuDraw()
         break;
     }
 }
-
+//GAME INPUTS by keyboard
 void Game::gameInputs()
 {
     if(KeyStates['p'] || KeyStates['P'] || KeyStates[27] && (CurrentMenuState == PLAY || CurrentMenuState == PAUSE)) 
@@ -262,6 +264,8 @@ void Game::gameInputs()
         KeyStates['M'] = false;
     }
 }
+
+//GAME DRAW
 void Game::Draw()
 {
     board.Draw();
@@ -276,10 +280,9 @@ void Game::Draw()
     ball.Draw(squareBall);
     isGameOver();
 }
-
+//SOUND HANDLING
 void Game::SoundHandling()
 {
-    std::cout << MusicOn << std::endl;
     if(!SoundOn) 
     {
         PlaySound(NULL, NULL, 0);
@@ -298,7 +301,7 @@ void Game::SoundHandling()
         hit = false;
     }
 }
-
+//RESET
 void Game::Reset()
 {
     player1 = Player(PADDLE_WIDTH_FROM_WALL, GAME_HEIGHT/2 - PADDLE_HEIGHT/2);
@@ -307,7 +310,7 @@ void Game::Reset()
     player2.setScore(0);
     ball.Initialize();
 }
-
+//GAME OVER CHECK
 void Game::isGameOver()
 {
     if(CurrentMenuState == PLAY)

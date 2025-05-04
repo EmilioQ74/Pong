@@ -1,18 +1,55 @@
 {
-    "version": 8,
-    "configurePresets": [
-        {
-            "name": "GCC 14.2.0 x86_64-w64-mingw32 (mingw64)",
-            "displayName": "GCC 14.2.0 x86_64-w64-mingw32 (mingw64)",
-            "description": "Using compilers: C = C:\\msys64\\mingw64\\bin\\gcc.exe, CXX = C:\\msys64\\mingw64\\bin\\g++.exe",
-            "generator": "MinGW Makefiles",
-            "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-                "CMAKE_C_COMPILER": "C:/msys64/mingw64/bin/gcc.exe",
-                "CMAKE_CXX_COMPILER": "C:/msys64/mingw64/bin/g++.exe",
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "GCC-14.2.0-Mingw64",
+      "displayName": "GCC 14.2.0 mingw64",
+      "description": "Using compilers: C = C:\\msys64\\mingw64\\bin\\gcc.exe, CXX = C:\\msys64\\mingw64\\bin\\g++.exe",
+      "generator": "MinGW Makefiles",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+        "CMAKE_C_COMPILER": "C:/msys64/mingw64/bin/gcc.exe",
+        "CMAKE_CXX_COMPILER": "C:/msys64/mingw64/bin/g++.exe",
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+      {
+        "name": "GCC-14.2.0-Mingw64 Release",
+        "displayName": "GCC 14.2.0 mingw64 Release",
+        "description": "Using compilers: C = C:\\msys64\\mingw64\\bin\\gcc.exe, CXX = C:\\msys64\\mingw64\\bin\\g++.exe",
+        "generator": "MinGW Makefiles",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
+        "cacheVariables": {
+          "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+          "CMAKE_C_COMPILER": "C:/msys64/mingw64/bin/gcc.exe",
+          "CMAKE_CXX_COMPILER": "C:/msys64/mingw64/bin/g++.exe",
+          "CMAKE_BUILD_TYPE": "Release"
         }
-    ]
+      },
+    {
+      "name": "VS2022-x64",
+      "displayName": "Visual Studio 2022 x64",
+      "description": "Use MSVC with Visual Studio 2022 x64 generator",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "VS2022-x64 Release",
+      "displayName": "Visual Studio 2022 x64 Release",
+      "description": "Use MSVC with Visual Studio 2022 x64 generator",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
 }

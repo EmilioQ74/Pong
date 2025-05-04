@@ -19,14 +19,14 @@ enum MenuState
 
 class Game{
     private:
-        Player player1, player2;
-        Ball ball;
+        Player player1, player2; 
+        Ball ball; 
         Board board;
         Menu menu;
-        MenuState CurrentMenuState;
-        bool Pause;
+        MenuState CurrentMenuState;  //navigate the menu
+        bool Pause; 
         bool squareBall;
-        int DifficultyMode;
+        int DifficultyMode;  //1 = easy, 2 = medium, 3 = hard
         bool SinglePlayerMode;
         std::string Winner;
         bool SoundOn;

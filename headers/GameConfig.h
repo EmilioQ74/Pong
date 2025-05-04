@@ -1,8 +1,18 @@
-#pragma once
+
+// Include necessary headers
 #include "GL/freeglut.h"
 #include "GL/gl.h"
 #include "GL/glu.h"
+
+// Standard libraries
 #include <iostream>
+
+//FOR MCVS
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+#include <cmath>
 
 //Game
 #define GAME_WIDTH 800

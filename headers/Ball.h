@@ -2,7 +2,6 @@
 #include "GameConfig.h"
 #include "Player.h"
 #include "Colors.h"
-#include "cmath"
 
 class Ball
 {

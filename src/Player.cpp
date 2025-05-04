@@ -81,11 +81,12 @@ void Player::AiLogic(double Ballx, double Bally,int mode) //ai logic by mode we 
         }
         
     }else{ //Here is the ai logic
-        if(y + PADDLE_HEIGHT/2>= Bally+wrongInputs) //if paddle y is above the ball it moves up
+        double marginPaddleCenter = 5;
+        if(y + PADDLE_HEIGHT/2 - marginPaddleCenter >= Bally+wrongInputs) //if paddle y is above the ball it moves up
         {
             MoveUp();
         }
-        if(y + PADDLE_HEIGHT/2 <= Bally + wrongInputs) //if paddle y is below the ball it moves down
+        if(y + PADDLE_HEIGHT/2 + marginPaddleCenter <= Bally + wrongInputs) //if paddle y is below the ball it moves down
         {
             MoveDown();
         }
