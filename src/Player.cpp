@@ -41,21 +41,21 @@ void Player::AiLogic(double Ballx, double Bally,int mode) //ai logic by mode we 
     double wrongInputs; //needs to make ai more random and beateable
     switch (mode) {
         case 1:
-            wrongInputs = (rand() % 61) - 30; //-30 to 30
+            wrongInputs = (rand() % 60); //60 STEPS FOR MISTAKE
             paddle.setSpeed(3);
             if (Ballx >= GAME_WIDTH / 2) {
                 paddle.setSpeed(3 * 1.5); //acceleration only when ball has pass the middle
             }
             break;
         case 2:
-            wrongInputs = (rand() % 41) - 20; //-20 to 20
+            wrongInputs = (rand() % 40); //40 STEPS FOR MISTAKE
             paddle.setSpeed(3);
             if (Ballx >= GAME_WIDTH / 2) {
                 paddle.setSpeed(4 * 1.5);
             }
             break;
         case 3:
-            wrongInputs = (rand() % 21) - 10; //-10 to 10
+            wrongInputs = (rand() % 20); //20 STEPS FOR MISTAKE
             paddle.setSpeed(4);
             if (Ballx >= GAME_WIDTH / 2) {
                 paddle.setSpeed(5 * 1.5);
@@ -86,7 +86,7 @@ void Player::AiLogic(double Ballx, double Bally,int mode) //ai logic by mode we 
         {
             MoveUp();
         }
-        if(y + PADDLE_HEIGHT/2 + marginPaddleCenter <= Bally + wrongInputs) //if paddle y is below the ball it moves down
+        if(y + PADDLE_HEIGHT/2 + marginPaddleCenter <= Bally-wrongInputs) //if paddle y is below the ball it moves down
         {
             MoveDown();
         }

@@ -74,7 +74,7 @@ int main(int argc, char** argv){
     int userScreenWidth = glutGet(GLUT_SCREEN_WIDTH);
     int userScreenHeight = glutGet(GLUT_SCREEN_HEIGHT);
     glutInitWindowPosition((userScreenWidth-GAME_WIDTH)/2,(userScreenHeight-GAME_HEIGHT)/2);
-    glutCreateWindow("PingPong");
+    glutCreateWindow("Pong");
     init();
     glutDisplayFunc(display);
     //keyboard

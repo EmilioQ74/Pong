@@ -1,4 +1,4 @@
-
+// a header file that contains all the game configuration and can be change only by the developer and building the game
 // Include necessary headers
 #include "GL/freeglut.h"
 #include "GL/gl.h"

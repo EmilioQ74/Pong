@@ -24,6 +24,7 @@ void Game::initialize()
     Pause = false;
     Winner = "";
     hit = false;
+    if(SoundOn)MusicOn = false;//reseting music
 }
 //left and right score
 void Game::leftRightScore()
@@ -144,7 +145,8 @@ void Game::mouseClick(int button, int state, int x, int y)
             }
             if(menu.ClickButton(x,y,menu.bottomButton)) //back
             {
-                CurrentMenuState = MENU;
+                Reset();
+                initialize();
                 return;
             }
             break;
@@ -152,6 +154,7 @@ void Game::mouseClick(int button, int state, int x, int y)
             if(menu.ClickButton(x,y,menu.winnerButton))
             {
                 CurrentMenuState = MENU;
+                Reset();
                 initialize();
                 DifficultyMode = 0;
                 SinglePlayerMode = true;
@@ -194,7 +197,7 @@ void Game::update()
     leftRightScore();
     gameInputs();
     SoundHandling();
-    if(!(Pause || CurrentMenuState == WINNER))
+    if( !(Pause || CurrentMenuState == WINNER))
     {
         ball.update();
     }
@@ -292,7 +295,7 @@ void Game::SoundHandling()
     {
         PlaySound(SOUNDTRACK, NULL, SND_ASYNC | SND_LOOP);
         MusicOn = true;
-        }
+    }
     if(SoundOn && CurrentMenuState == PLAY && hit)
     {
         int randNum = rand() % 2;
